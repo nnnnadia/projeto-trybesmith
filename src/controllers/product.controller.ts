@@ -7,4 +7,7 @@ export async function create(req: Request, res: Response): Promise<void> {
   res.status(201).json(product);
 }
 
-export const temp = 'só pro linter não reclamar por enquanto';
+export async function findAll(_req: Request, res: Response): Promise<void> {
+  const products = await ProductService.findAll();
+  res.status(200).json(products);
+}

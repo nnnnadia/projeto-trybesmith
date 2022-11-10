@@ -1,4 +1,5 @@
-import { ResultSetHeader } from 'mysql2';
+import { ResultSetHeader, RowDataPacket } from 'mysql2';
+import IProduct from '../interfaces/IProduct';
 import connection from './connection';
 
 export async function create(name: string, amount: string) {
@@ -15,4 +16,8 @@ export async function create(name: string, amount: string) {
   return newProduct;
 }
 
-export const temp = 'só pro linter não reclamar por enquanto';
+export async function findAll(): Promise<IProduct[]> {
+  const [result] = await connection.execute<(IProduct & RowDataPacket)[]>(
+    'SELECT * FROM `Trybesmith`.`Products`');
+  return result;
+}

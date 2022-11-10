@@ -2,7 +2,7 @@ import { ResultSetHeader, RowDataPacket } from 'mysql2';
 import IProduct from '../interfaces/IProduct';
 import connection from './connection';
 
-export async function create(name: string, amount: string) {
+export async function create(name: string, amount: string): Promise<IProduct> {
   const [{ insertId }] = await connection.execute<ResultSetHeader>(
     'INSERT INTO `Trybesmith`.`Products`(`name`, `amount`)'
       + 'VALUE (?, ?)',

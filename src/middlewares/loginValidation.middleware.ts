@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import ErrorWithStatusCode from '../errors/ErrorWithStatusCode';
-import loginSchema from '../errors/validations/loginSchema';
+import loginSchema from './validations/loginSchema';
 
 const loginValidation = (
   req: Request,

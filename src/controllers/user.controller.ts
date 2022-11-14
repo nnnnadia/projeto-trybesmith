@@ -7,4 +7,8 @@ export async function create(req: Request, res: Response): Promise<void> {
   res.status(201).json({ token });
 }
 
-export const temp = 'só pro linter não reclamar';
+export async function login(req: Request, res: Response): Promise<void> {
+  const { username, password } = req.body;
+  const token = await UserService.checkLogin(username, password);
+  res.status(200).json({ token });
+}

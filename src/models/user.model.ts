@@ -1,6 +1,8 @@
-import { ResultSetHeader } from 'mysql2';
+import { ResultSetHeader, RowDataPacket } from 'mysql2';
 import connection from './connection';
 import * as jwt from '../utils/jwt';
+import IUser from '../interfaces/IUser';
+import DefaultError from '../errors/DefaultError';
 
 export async function create(
   username: string,
@@ -17,4 +19,14 @@ export async function create(
   return token;
 }
 
-export const temp = 'só pro linter não reclamar';
+export async function getUserByUsername(
+  username: string,
+): Promise<IUser | undefined> {
+  try {
+    const [[result]] = await connection.execute<(RowDataPacket & IUser)[]>(
+      'SELECT * FROM `Trybesmith`.`Users` WHERE `username` = ?', [username]);
+    return result;
+  } catch (error) {
+    throw new DefaultError('Internal error');
+  }
+}

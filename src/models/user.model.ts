@@ -1,6 +1,5 @@
 import { ResultSetHeader, RowDataPacket } from 'mysql2';
 import connection from './connection';
-import * as jwt from '../utils/jwt';
 import IUser from '../interfaces/IUser';
 import DefaultError from '../errors/DefaultError';
 
@@ -9,14 +8,17 @@ export async function create(
   classe: string,
   level: number,
   password: string,
-): Promise<string> {
-  const [{ insertId }] = await connection.execute<ResultSetHeader>(
-    'INSERT INTO `Trybesmith`.`Users`(`username`, `classe`, `level`, `password`)'
-      + 'VALUE (?, ?, ?, ?)',
-    [username, classe, level, password],
-  );
-  const token = jwt.createToken(insertId);
-  return token;
+): Promise<number> {
+  try {
+    const [{ insertId }] = await connection.execute<ResultSetHeader>(
+      'INSERT INTO `Trybesmith`.`Users`(`username`, `classe`, `level`, `password`)'
+        + 'VALUE (?, ?, ?, ?)',
+      [username, classe, level, password],
+    );
+    return insertId;
+  } catch (error) {
+    throw new DefaultError('Internal Error');
+  }
 }
 
 export async function getUserByUsername(

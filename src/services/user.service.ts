@@ -8,7 +8,9 @@ export async function create(
   level: number,
   password: string,
 ): Promise<string> {
-  return UserModel.create(username, classe, level, password);
+  const id = await UserModel.create(username, classe, level, password);
+  const token = jwt.createToken(id);
+  return token;
 }
 
 export async function checkLogin(

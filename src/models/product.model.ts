@@ -21,3 +21,12 @@ export async function findAll(): Promise<IProduct[]> {
     'SELECT * FROM `Trybesmith`.`Products`');
   return result;
 }
+
+export async function assignOrder(orderId: number, productsIds: number[]): Promise<void> {
+  const whereString = productsIds.map((_number) => '`id` = ?')
+    .join(' OR ');
+  await connection.execute<ResultSetHeader>(
+    `UPDATE \`Trybesmith\`.\`Products\` SET \`orderId\` = ? WHERE ${whereString}`,
+    [orderId, ...productsIds],
+  );
+}

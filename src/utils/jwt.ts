@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
 dotenv.config();
 
@@ -13,4 +13,4 @@ export const createToken = (userId: number) => jwt.sign({ userId }, secretKey, j
 
 export const validateToken = (token: string) => jwt.verify(token, secretKey);
 
-export const retrieveTokenData = (token: string) => jwt.decode(token);
+export const retrieveTokenData = (token: string): JwtPayload => jwt.decode(token) as JwtPayload;
